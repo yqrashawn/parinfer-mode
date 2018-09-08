@@ -116,6 +116,9 @@ close-parens after it.")
 (defvar parinfer-display-error nil
   "If display error when parinfer failed in Indent Mode.")
 
+(defvar parinfer-disable-indent-mode-confirm t
+  "If disable confrim when switching to idnent mode will modifier the buffer.")
+
 (defvar parinfer-strategy
   '((default
       self-insert-command delete-indentation kill-line comment-line
@@ -908,7 +911,7 @@ If there's any change, display a confirm message in minibuffer."
           nil)
       (if (and changed-lines
                (not (string= text (plist-get result :text))))
-          (if (y-or-n-p "Parinfer: Switch to indent will modify this buffer, continue? ")
+          (if (or parinfer-disable-indent-mode-confirm (y-or-n-p "Parinfer: Switch to indent will modify this buffer, continue? "))
               (progn (cl-loop for l in changed-lines do
                               (parinfer--goto-line (1+ (plist-get l :line-no)))
                               (delete-region (line-beginning-position)
