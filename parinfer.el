@@ -989,7 +989,7 @@ If there's any change, display a confirm message in minibuffer."
   "Raise sexp and Indent code."
   (interactive)
   (call-interactively 'raise-sexp)
-  (parinfer--reindent-sexp))
+  (parinfer--reindent-sexp)
 
  (defun parinfer-region-delete-region ()
     (interactive)
@@ -997,7 +997,7 @@ If there's any change, display a confirm message in minibuffer."
         (call-interactively 'delete-region)
       (call-interactively 'parinfer-backward-delete-char))
     (deactivate-mark t)
-    (parinfer-run))
+    (parinfer-run)))
 
 (defun parinfer-yank ()
   "Replacement in 'parinfer-mode' for 'yank' command."
