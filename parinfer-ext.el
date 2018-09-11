@@ -284,6 +284,12 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
       evil-forward-word evil-forward-word-begin evil-backward-word-begin
       evil-backward-end evil-scroll-page-down evil-scroll-up)))
 
+(if (fboundp 'evil-insert-state)
+    (progn (add-hook 'evil-insert-state-entry-hook (lambda ()
+                                                     (when (bound-and-true-p parinfer-mode) (parinfer--switch-to-paren-mode))))
+           (add-hook 'evil-normal-state-entry-hook (lambda ()
+                                                     (when (bound-and-true-p parinfer-mode) (parinfer--switch-to-indent-mode))))))
+
 ;; -----------------------------------------------------------------------------
 ;; Smart yank
 ;; -----------------------------------------------------------------------------
