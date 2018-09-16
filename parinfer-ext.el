@@ -296,11 +296,12 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
 
 (defun parinfer-smart-yank:paren-yank ()
   (interactive)
-  (let ((yank-str nil)
-        (m major-mode))
+  (let* ((yank-str nil)
+         (m major-mode))
     (with-temp-buffer
-      (yank)
       (funcall m)
+      (parinfer--switch-to-paren-mode)
+      (yank)
       (ignore-errors (parinfer--reindent-sexp))
       (parinfer-indent-buffer)
       (setq yank-str (buffer-substring-no-properties (point-min) (point-max))))
