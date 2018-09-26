@@ -228,6 +228,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
         (define-key parinfer-mode-map (kbd "_") 'special-lispy-underscore)
         (define-key parinfer-mode-map (kbd "m") 'special-lispy-mark-list)
         (define-key parinfer-mode-map (kbd "v") 'special-lispy-view)
+        (define-key parinfer-mode-map (kbd "z") 'special-lh-knight/body)
         (define-key parinfer-mode-map (kbd "M-m") 'lispy-mark-symbol)
         (define-key parinfer-mode-map (kbd "C-1") 'lispy-describe-inline)
         (define-key parinfer-mode-map (kbd "C-2") 'lispy-arglist-inline)
