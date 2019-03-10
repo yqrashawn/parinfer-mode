@@ -274,7 +274,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
       parinfer-lispy:brackets
       parinfer-lispy:space))
   (parinfer-strategy-add 'instantly
-    '(newline))
+    '(newline lispy-delete))
   (parinfer-lispy:init))
 
 ;; -----------------------------------------------------------------------------
@@ -285,30 +285,65 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
   "Integration with Evil."
   :mount
   (parinfer-strategy-add 'default
-    '(evil-delete-char evil-shift-left evil-shift-right evil-shift-right-line
+    '(evil-shift-left
+      evil-shift-right
+      evil-shift-right-line
       evil-shift-left-line))
   (parinfer-strategy-add 'instantly
-    '(evil-delete evil-change evil-change-line evil-paste-before evil-paste-after
-      evil-delete-line evil-delete-char evil-delete-backward-char evil-substitute
-      evil-change-whole-line evil-force-normal-state evil-normal-state
-       evil-exit-visual-state))
+    '(evil-delete
+      evil-change
+      evil-change-line
+      evil-paste-before
+      evil-paste-after
+      evil-delete-line
+      evil-delete-char
+      evil-delete-backward-char
+      evil-substitute
+      evil-change-whole-line
+      evil-force-normal-state
+      evil-normal-state
+      evil-exit-visual-state))
   (parinfer-strategy-add 'skip
-    '(evil-previous-line evil-forward-char evil-backward-char evil-next-line
-      evil-forward-word evil-forward-word-begin evil-backward-word-begin
-      evil-backward-end evil-scroll-page-down evil-scroll-up)))
+    '(evil-previous-line
+      evil-forward-char
+      evil-backward-char
+      evil-next-line
+      evil-forward-word
+      evil-forward-word-begin
+      evil-backward-word-begin
+      evil-backward-end
+      evil-scroll-page-down
+      evil-scroll-up)))
 
 (if (fboundp 'evil-insert-state)
     (progn
-      (add-hook
-       'evil-insert-state-entry-hook
-       (lambda ()
-         (when (bound-and-true-p parinfer-mode)
-           (parinfer--switch-to-paren-mode))))
-      (defun parinfer-evil-normal-state ()
-        (interactive)
-        (parinfer--switch-to-indent-mode-1)
-        (evil-normal-state))
-      (evil-define-key 'insert parinfer-mode-map (kbd "<escape>") 'parinfer-evil-normal-state)))
+      (add-hook 'evil-insert-state-entry-hook
+                (lambda ()
+                  (when (bound-and-true-p parinfer-mode)
+                    (parinfer--switch-to-paren-mode))))
+      (add-hook 'evil-normal-state-entry-hook
+                (lambda ()
+                  (when (bound-and-true-p parinfer-mode)
+                    (parinfer--switch-to-indent-mode-1))))))
+
+;; -----------------------------------------------------------------------------
+;; lispyville
+;; -----------------------------------------------------------------------------
+
+(parinfer-define-extension lispyville
+  "Integration with lispyville"
+  :mount
+  (parinfer-strategy-add 'default
+    '(lispyville-delete-backward-word
+      lispyville-normal-state))
+  (parinfer-strategy-add 'instantly
+    '(lispyville-delete-char-or-splice
+      lispyville-delete-char-or-splice-backwards
+      lispyville-change
+      lispyville-change-line
+      lispyville-change-whole-line))
+  (parinfer-strategy-add 'skip
+    '()))
 
 ;; -----------------------------------------------------------------------------
 ;; Smart yank
@@ -768,9 +803,9 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
              (lispy-backward-delete 1)
            (backward-delete-char 1))))
     (progn
-      (if (fboundp 'lispy-backward-delete)
+      (if (fboundp 'lispy-backward-delete
              (lispy-backward-delete 1)
-           (backward-delete-char 1))
+           (backward-delete-char 1)))
       (when (parinfer--in-string-p)
         (parinfer--setq-text-modified nil)))))
 
