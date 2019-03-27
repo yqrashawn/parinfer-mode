@@ -631,7 +631,8 @@ This will finish delay processing immediately."
       (parinfer--invoke-parinfer (point)))
 
      (t nil)))
-  (setq parinfer--last-line-number (line-number-at-pos (point))))
+  ;; (setq parinfer--last-line-number (line-number-at-pos (point)))
+  (setq parinfer--last-line-number (string-to-number (format-mode-line "%l"))))
 
 (defun parinfer--update-text-modified ()
   (when (and (symbolp this-command)
