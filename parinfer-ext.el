@@ -238,9 +238,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
         (define-key parinfer-mode-map (kbd "C-3") 'lispy-right)
         (define-key parinfer-mode-map (kbd "C-4") 'lispy-x)
         (define-key parinfer-mode-map (kbd "C-8") 'lispy-parens-down)
-        (when (fboundp 'evil-insert-state)
-          (evil-define-key 'insert parinfer-mode-map (kbd "C-d") 'lispy-delete)
-          (evil-define-key 'insert parinfer-mode-map (kbd "C-k") (lambda () (interactive) (hs-toggle-hiding) (backward-char))))
+        (define-key parinfer-mode-map (kbd "C-d") 'lispy-delete)
         (define-key parinfer-mode-map (kbd "x") 'special-lispy-x)
         (define-key parinfer-mode-map (kbd "b") 'special-lispy-back)
         (define-key parinfer-mode-map (kbd "f") 'special-lispy-flow)
@@ -298,6 +296,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
       evil-delete-line
       evil-delete-char
       evil-delete-backward-char
+      evil-join
       evil-substitute
       evil-change-whole-line
       evil-force-normal-state
@@ -339,6 +338,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
   (parinfer-strategy-add 'instantly
     '(lispyville-delete-char-or-splice
       lispyville-delete-char-or-splice-backwards
+      lispyvile-join
       lispyville-change
       lispyville-change-line
       lispyville-change-whole-line))
@@ -362,6 +362,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
       (setq yank-str (buffer-substring-no-properties (point-min) (point-max))))
     (parinfer-paren-run
      (insert yank-str)
+     (parinfer--reindent-sexp)
      (parinfer--reindent-sexp))))
 
 (defun parinfer-smart-yank:yank ()
