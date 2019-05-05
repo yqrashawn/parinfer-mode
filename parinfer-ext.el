@@ -299,7 +299,9 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
       evil-paste-after
       evil-delete-line
       evil-delete-char
+      evil-delete-backward-word
       evil-delete-backward-char
+      evil-delete-backward-char-and-join
       evil-join
       evil-substitute
       evil-change-whole-line
