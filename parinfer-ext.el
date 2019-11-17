@@ -253,7 +253,7 @@ Use rainbow-delimiters for Paren Mode, and dim-style parens for Indent Mode."
         (define-key parinfer-mode-map (kbd "i") #'special-lispy-tab)
         (define-key parinfer-mode-map (kbd "r") #'special-lispy-raise)
         (define-key parinfer-mode-map (kbd "C-a") #'lispy-move-beginning-of-line)
-        (define-key parinfer-mode-map (kbd "g") 'special-lispy-goto)
+        (define-key parinfer-mode-map (kbd "g") #'avy-goto-word-1)
         (define-key parinfer-mode-map (kbd ":") #'lispy-colon)
         (define-key parinfer-mode-map (kbd ">") #'special-lispy-slurp)
         (define-key parinfer-mode-map (kbd "<") #'special-lispy-barf)
